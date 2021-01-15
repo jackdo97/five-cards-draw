@@ -6,84 +6,70 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 
-public class ModelTests
-{
+public class ModelTests {
 	HandEvaluater eval = new HandEvaluater();
 
 	@Test
-	public void CardValueCorrect()
-	{
+	public void CardValueCorrect() {
 		Card c = new Card(11, Card.Suit.DIAMOND);
 		boolean result = c.getValue() == 11;
-		assertEquals("Card.getValue() "+c, true, result);
+		assertEquals("Card.getValue() " + c, true, result);
 	}
 	
 	@Test
-	public void CardFaceCorrect()
-	{
+	public void CardFaceCorrect() {
 		Card c = new Card(11, Card.Suit.DIAMOND);
 		boolean result = c.getFace() == Card.Face.JACK;
-		assertEquals("Card.getFace() "+c, true, result);
+		assertEquals("Card.getFace() " + c, true, result);
 	}
 
 	@Test
-	public void CardSuitCorrect()
-	{
+	public void CardSuitCorrect() {
 		Card c = new Card(11, Card.Suit.DIAMOND);
 		boolean result = c.getSuit() == Card.Suit.DIAMOND;
-		assertEquals("Card.getSuit() "+c, true, result);
+		assertEquals("Card.getSuit() " + c, true, result);
 	}
 
 	@Test
-	public void DeckDealOneDealCard()
-	{
+	public void DeckDealOneDealCard() {
 		Deck deck = new Deck();
 		Card c = deck.dealOne();
 		boolean result = true;
-		if(c.getValue() != 14)
-		{
+		if (c.getValue() != 14) {
 			result = false;
 		}
-		if(c.getSuit() != Card.Suit.DIAMOND)
-		{
+		if (c.getSuit() != Card.Suit.DIAMOND) {
 			result = false;
 		}
-		assertEquals("Deck.dealOne() "+c, true, result);
+		assertEquals("Deck.dealOne() " + c, true, result);
 	}
 
 	@Test
-	public void DeckDealOneRemoveCard()
-	{
+	public void DeckDealOneRemoveCard() {
 		Deck deck = new Deck();
 		Card c1 = deck.dealOne();
 		Card c2 = deck.dealOne();
 		boolean result = true;
-		if(c1.getValue() == c2.getValue()&&c1.getSuit() == c2.getSuit())
-		{
+		if (c1.getValue() == c2.getValue()&& c1.getSuit() == c2.getSuit()) {
 			result = false;
 		}
 		assertEquals("Deck.dealOne() "+c1+" "+c2, true, result);
 	}
 
 	@Test
-	public void DeckDealNewHandHandReplaceCards()
-	{
+	public void DeckDealNewHandHandReplaceCards() {
 		Deck deck = new Deck();
 		Player player = new Player(100, "Player");
 		deck.dealNewHand(player);
 		Hand hand1 = new Hand();
-		for(int i = 0; i < 5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			hand1.getCards()[i] = player.getHand().getCards()[i];
 		}
 		deck.dealNewHand(player);
 		boolean result = true;
-		for(int i = 0; i < 5; i++)
-		{
-			if(hand1.getCards()[i].getValue() == player.getHand().getCards()[i].getValue())
-			{
-				if(hand1.getCards()[i].getSuit() == player.getHand().getCards()[i].getSuit())
-				{
+		for(int i = 0; i < 5; i++) {
+			if(hand1.getCards()[i].getValue() == player.getHand().getCards()[i].getValue()) {
+				if(hand1.getCards()[i].getSuit() == player.getHand().getCards()[i].getSuit()) {
 					result = false;
 				}
 			}
@@ -92,27 +78,23 @@ public class ModelTests
 	}
 
 	@Test
-	public void DeckResetDeck()
-	{
+	public void DeckResetDeck() {
 		Deck deck = new Deck();
 		Card c1 = deck.dealOne();
 		deck.resetDeck();
 		Card c2 = deck.dealOne();
 		boolean result = true;
-		if(c1.getValue() != c2.getValue())
-		{
+		if(c1.getValue() != c2.getValue()) {
 			result = false;
 		}
-		if(c1.getSuit() != c2.getSuit())
-		{
+		if(c1.getSuit() != c2.getSuit()) {
 			result = false;
 		}
 		assertEquals("Deck.resetDeck() "+c1+" "+c2, true, result);
 	}
 
 	@Test
-	public void HandReplace()
-	{
+	public void HandReplace() {
 		Deck deck = new Deck();
 		Hand hand = new Hand();
 		Card c1 = deck.dealOne();
@@ -120,48 +102,44 @@ public class ModelTests
 		Card c2 = deck.dealOne();
 		hand.replace(c2,0);
 		boolean result = true;
-		if(c2.getValue() != hand.getCards()[0].getValue()&&c2.getSuit() != hand.getCards()[0].getSuit())
-		{
+		if (c2.getValue() != hand.getCards()[0].getValue()&&c2.getSuit() != hand.getCards()[0].getSuit()) {
 			result = false;
 		}
 		assertEquals("Hand.replace() "+hand.reveal(), true, result);
 	}
 
 	@Test
-	public void HandEvaluaterRoyalFlush()
-	{
+	public void HandEvaluaterRoyalFlush() {
 		Hand hand = new Hand();
 		Card[] newHand = new Card[5];
-		newHand[0] = new Card(14,Card.Suit.HEART);
-		newHand[1] = new Card(13,Card.Suit.HEART);
-		newHand[2] = new Card(12,Card.Suit.HEART);
-		newHand[3] = new Card(11,Card.Suit.HEART);
-		newHand[4] = new Card(10,Card.Suit.HEART);
+		newHand[0] = new Card(14, Card.Suit.HEART);
+		newHand[1] = new Card(13, Card.Suit.HEART);
+		newHand[2] = new Card(12, Card.Suit.HEART);
+		newHand[3] = new Card(11, Card.Suit.HEART);
+		newHand[4] = new Card(10, Card.Suit.HEART);
 		hand.replaceCards(newHand);
 		int[] handValue = eval.getHandValue(hand);
 		boolean result = handValue[0] == 10;
-		assertEquals("HandEvaluater.getHandValue(): (Royal Flush)"+handValue[0], true, result);
+		assertEquals("HandEvaluater.getHandValue(): (Royal Flush)"+ handValue[0], true, result);
 	}
 
 	@Test
-	public void HandEvaluaterSortHand()
-	{
+	public void HandEvaluaterSortHand() {
 		Hand hand = new Hand();
 		Card[] newHand = new Card[5];
-		newHand[2] = new Card(14,Card.Suit.HEART);
-		newHand[3] = new Card(13,Card.Suit.HEART);
-		newHand[4] = new Card(12,Card.Suit.HEART);
-		newHand[0] = new Card(11,Card.Suit.HEART);
-		newHand[1] = new Card(10,Card.Suit.HEART);
+		newHand[2] = new Card(14, Card.Suit.HEART);
+		newHand[3] = new Card(13, Card.Suit.HEART);
+		newHand[4] = new Card(12, Card.Suit.HEART);
+		newHand[0] = new Card(11, Card.Suit.HEART);
+		newHand[1] = new Card(10, Card.Suit.HEART);
 		hand.replaceCards(newHand);
 		int[] handValue = eval.getHandValue(hand);
 		boolean result = handValue[0] == 10;
-		assertEquals("HandEvaluater.cardSort() "+handValue[0], true, result);
+		assertEquals("HandEvaluater.cardSort() " + handValue[0], true, result);
 	}
 
 	@Test
-	public void HandEvaluaterStraightFlush()
-	{
+	public void HandEvaluaterStraightFlush() {
 		Hand hand = new Hand();
 		Card[] newHand = new Card[5];
 		newHand[2] = new Card(9,Card.Suit.HEART);
@@ -172,7 +150,7 @@ public class ModelTests
 		hand.replaceCards(newHand);
 		int[] handValue = eval.getHandValue(hand);
 		boolean result = handValue[0] == 9;
-		assertEquals("HandEvaluater.getHandValue(): (Straight Flush)"+handValue[0], true, result);
+		assertEquals("HandEvaluater.getHandValue(): (Straight Flush)" + handValue[0], true, result);
 	}
 	
 	@Test

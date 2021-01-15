@@ -218,7 +218,7 @@ public class TableController {
             enableBettingRoundButtons(tableView, false);
             do {
                 opponentsBettingRound(tableView);
-            } while(shouldPlayBetRoundAgain());
+            } while (shouldPlayBetRoundAgain());
             tableView.getRoundLabel().setText("Replace round");
             opponentsReplaceRound();
             round++;
@@ -239,7 +239,7 @@ public class TableController {
             user.fold();
             do {
                 opponentsBettingRound(tableView);
-            } while(shouldPlayBetRoundAgain());
+            } while (shouldPlayBetRoundAgain());
             showDown(tableView);
         }
     }
@@ -490,7 +490,9 @@ public class TableController {
     private boolean shouldPlayBetRoundAgain() {
         if (user.inHand() && user.getTotalMoney() != 0 && user.getCurrentBet() != table.getMaxBet()) return true;
         for (Opponent opponent: opponents) {
-            if (opponent.inHand() && opponent.getTotalMoney() != 0 && opponent.getCurrentBet() != table.getMaxBet()) return true;
+            if (opponent.inHand() && opponent.getTotalMoney() != 0 && opponent.getCurrentBet() != table.getMaxBet()) {
+                return true;
+            }
         }
         return false;
     }
